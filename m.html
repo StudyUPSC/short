@@ -1,0 +1,3153 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UPSC MCQ — History Test</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f1117;
+      --card: #1a1d27;
+      --card2: #21253a;
+      --border: #2e3250;
+      --accent: #f59e0b;
+      --accent2: #3b82f6;
+      --correct: #22c55e;
+      --wrong: #ef4444;
+      --text: #e8eaf6;
+      --muted: #8892b0;
+      --gold: #fbbf24;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Noto Sans Devanagari', 'Rajdhani', sans-serif;
+      min-height: 100vh;
+      padding: 20px 16px 120px;
+      background-image: radial-gradient(ellipse at 20% 0%, #1e2a4a44 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 100%, #2a1a3a44 0%, transparent 60%);
+    }
+
+    .screen {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: var(--bg);
+      overflow-y: auto;
+      padding: 20px 16px 60px;
+    }
+
+    .screen.active {
+      display: block;
+      animation: fadeIn .3s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .screen-card {
+      background: linear-gradient(135deg, #1e2a4a, #1a1d27);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      max-width: 440px;
+      margin: 20px auto;
+      padding: 32px 28px;
+      box-shadow: 0 8px 40px #00000066;
+    }
+
+    .screen-title {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-align: center;
+      margin-bottom: 6px;
+    }
+
+    .screen-sub {
+      color: var(--muted);
+      font-size: 0.8rem;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .fab-register {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 900;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      filter: drop-shadow(0 8px 24px #f59e0b55);
+      animation: fabPulse 2.5s ease-in-out infinite;
+    }
+
+    .fab-register.visible {
+      display: flex;
+    }
+
+    @keyframes fabPulse {
+
+      0%,
+      100% {
+        transform: translateX(-50%) scale(1);
+      }
+
+      50% {
+        transform: translateX(-50%) scale(1.04);
+      }
+    }
+
+    .fab-register-btn {
+      background: var(--accent);
+      color: #0f1117;
+      border: none;
+      border-radius: 50px;
+      padding: 16px 36px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      font-family: 'Rajdhani', sans-serif;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      white-space: nowrap;
+      box-shadow: 0 6px 28px #f59e0b66, 0 2px 8px #00000066;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: background .2s;
+    }
+
+    .fab-register-btn:hover {
+      background: #d97706;
+    }
+
+    .fab-register-tip {
+      background: #0f1117cc;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: 0.72rem;
+      color: var(--muted);
+      font-family: 'Rajdhani', sans-serif;
+      letter-spacing: 1px;
+      backdrop-filter: blur(8px);
+    }
+
+    .mode-switch-wrap {
+      max-width: 440px;
+      margin: 0 auto 20px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px 20px;
+      display: none;
+    }
+
+    .mode-switch-wrap.visible {
+      display: block;
+    }
+
+    .mode-switch-label {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.78rem;
+      color: var(--muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .mode-toggle {
+      display: flex;
+      background: var(--card2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .mode-btn {
+      flex: 1;
+      padding: 12px 10px;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: all .2s;
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    .mode-btn.active-mode {
+      background: var(--accent);
+      color: #0f1117;
+      border-radius: 10px;
+    }
+
+    .mode-btn .mode-icon {
+      font-size: 1.2rem;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .mode-btn .mode-name {
+      font-size: 0.82rem;
+      display: block;
+    }
+
+    .mode-btn .mode-desc {
+      font-size: 0.68rem;
+      opacity: 0.8;
+      display: block;
+      margin-top: 2px;
+    }
+
+    #screenPreview {
+      z-index: 500;
+      background: var(--bg);
+    }
+
+    .preview-hero {
+      max-width: 680px;
+      margin: 0 auto 24px;
+      background: linear-gradient(135deg, #1e2a4a, #1a1d27);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px 28px;
+      text-align: center;
+      box-shadow: 0 8px 40px #00000066;
+    }
+
+    .preview-badge {
+      display: inline-block;
+      background: var(--accent);
+      color: #0f1117;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: 0.75rem;
+      padding: 4px 14px;
+      border-radius: 20px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .preview-title {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
+
+    .preview-sub {
+      color: var(--muted);
+      font-size: 0.88rem;
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .preview-stats {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+
+    .pstat {
+      background: #00000033;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 20px;
+      text-align: center;
+    }
+
+    .pstat .pv {
+      font-size: 1.4rem;
+      font-weight: 700;
+      font-family: 'Rajdhani', sans-serif;
+      color: var(--gold);
+    }
+
+    .pstat .pl {
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+
+    .btn-start-preview {
+      background: var(--accent);
+      color: #0f1117;
+      border: none;
+      border-radius: 14px;
+      padding: 16px 40px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      cursor: pointer;
+      font-family: 'Rajdhani', sans-serif;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: all .2s;
+      box-shadow: 0 4px 20px #f59e0b44;
+    }
+
+    .btn-start-preview:hover {
+      background: #d97706;
+      transform: translateY(-2px);
+    }
+
+    .preview-mcq-list {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .preview-q-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      margin-bottom: 12px;
+      overflow: hidden;
+      opacity: 0.6;
+      transition: opacity .2s;
+    }
+
+    .preview-q-card:hover {
+      opacity: 0.85;
+    }
+
+    .preview-q-header {
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(135deg, #1e2a4a, #1a1d27);
+    }
+
+    .preview-q-num {
+      background: var(--accent);
+      color: #0f1117;
+      font-weight: 700;
+      font-size: 0.72rem;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-family: 'Rajdhani', sans-serif;
+    }
+
+    .preview-lock {
+      margin-left: auto;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    .preview-q-text {
+      padding: 14px 18px;
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: var(--text);
+    }
+
+    .preview-opts {
+      padding: 0 18px 14px;
+    }
+
+    .preview-opt {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      margin-bottom: 5px;
+      background: var(--card2);
+      border: 1px solid var(--border);
+      font-size: 0.84rem;
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+    }
+
+    .preview-opt:hover {
+      border-color: var(--accent);
+      background: #1e1a0a;
+    }
+
+    .preview-opt-lbl {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.72rem;
+      font-family: 'Rajdhani', sans-serif;
+      flex-shrink: 0;
+      color: var(--muted);
+    }
+
+    .preview-blur {
+      filter: blur(4px);
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .preview-cta {
+      max-width: 680px;
+      margin: 0 auto 100px;
+      text-align: center;
+      padding: 24px;
+      background: var(--card);
+      border: 1px solid var(--accent);
+      border-radius: 16px;
+    }
+
+    .preview-cta p {
+      color: var(--muted);
+      font-size: 0.88rem;
+      margin-bottom: 14px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-family: 'Rajdhani', sans-serif;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .form-input {
+      width: 100%;
+      background: var(--card2);
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      color: var(--text);
+      font-family: 'Noto Sans Devanagari', 'Rajdhani', sans-serif;
+      font-size: 0.9rem;
+      transition: border-color .2s;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--accent2);
+    }
+
+    .form-input::placeholder {
+      color: var(--muted);
+    }
+
+    .btn-primary {
+      width: 100%;
+      background: var(--accent);
+      color: #0f1117;
+      border: none;
+      border-radius: 12px;
+      padding: 14px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      font-family: 'Rajdhani', sans-serif;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: all .2s;
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-primary:hover {
+      background: #d97706;
+      transform: translateY(-1px);
+    }
+
+    .btn-primary:disabled {
+      background: #555;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-secondary {
+      width: 100%;
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      font-family: 'Rajdhani', sans-serif;
+      transition: all .2s;
+      margin-top: 8px;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent2);
+      color: var(--accent2);
+    }
+
+    .form-error {
+      color: var(--wrong);
+      font-size: 0.78rem;
+      margin-top: 6px;
+      display: none;
+    }
+
+    .form-error.show {
+      display: block;
+    }
+
+    .gender-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .gender-opt {
+      flex: 1;
+      background: var(--card2);
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      padding: 10px;
+      text-align: center;
+      cursor: pointer;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: 0.88rem;
+      transition: all .2s;
+      color: var(--muted);
+    }
+
+    .gender-opt.selected-m {
+      border-color: var(--accent2);
+      color: var(--accent2);
+      background: #1e2d4a;
+    }
+
+    .gender-opt.selected-f {
+      border-color: #f472b6;
+      color: #f472b6;
+      background: #2d1a2d;
+    }
+
+    .pw-input-wrap {
+      position: relative;
+    }
+
+    .pw-toggle {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: var(--muted);
+      font-size: 1.1rem;
+    }
+
+    .pw-contact-btns {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .btn-telegram {
+      flex: 1;
+      background: #229ED9;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 11px;
+      font-weight: 700;
+      font-size: 0.82rem;
+      cursor: pointer;
+      font-family: 'Rajdhani', sans-serif;
+      transition: all .2s;
+    }
+
+    .btn-telegram:hover {
+      background: #1a8cbe;
+    }
+
+    .btn-whatsapp {
+      flex: 1;
+      background: #25D366;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 11px;
+      font-weight: 700;
+      font-size: 0.82rem;
+      cursor: pointer;
+      font-family: 'Rajdhani', sans-serif;
+      transition: all .2s;
+    }
+
+    .btn-whatsapp:hover {
+      background: #1da851;
+    }
+
+    .profile-fab {
+      position: fixed;
+      top: 18px;
+      left: 18px;
+      z-index: 800;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 2px solid var(--accent);
+      background: var(--card2);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px #00000066;
+      transition: all .2s;
+    }
+
+    .profile-fab:hover {
+      transform: scale(1.08);
+      border-color: var(--gold);
+    }
+
+    .profile-fab .pf-placeholder {
+      font-size: 1.3rem;
+      color: var(--accent);
+    }
+
+    .profile-dropdown {
+      position: fixed;
+      top: 76px;
+      left: 18px;
+      z-index: 799;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      min-width: 220px;
+      box-shadow: 0 8px 30px #00000088;
+      display: none;
+      animation: fadeIn .2s ease;
+    }
+
+    .profile-dropdown.open {
+      display: block;
+    }
+
+    .pd-name {
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--text);
+    }
+
+    .pd-mobile {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 2px;
+    }
+
+    .pd-gender {
+      font-size: 0.72rem;
+      color: var(--accent2);
+      font-family: 'Rajdhani', sans-serif;
+      background: #1e2d4a;
+      border-radius: 6px;
+      padding: 2px 8px;
+      display: inline-block;
+      margin-bottom: 12px;
+    }
+
+    .pd-sep {
+      height: 1px;
+      background: var(--border);
+      margin: 10px 0;
+    }
+
+    .pd-btn {
+      width: 100%;
+      background: var(--card2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 9px 12px;
+      color: var(--text);
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 600;
+      font-size: 0.82rem;
+      cursor: pointer;
+      text-align: left;
+      transition: all .2s;
+      margin-bottom: 6px;
+    }
+
+    .pd-btn:hover {
+      border-color: var(--accent2);
+      color: var(--accent2);
+    }
+
+    .fab-timer {
+      position: fixed;
+      top: 18px;
+      right: 18px;
+      z-index: 800;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+    }
+
+    .fab-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      box-shadow: 0 4px 20px #00000066;
+      transition: all .2s;
+    }
+
+    .fab-btn.on {
+      background: var(--accent);
+      color: #0f1117;
+    }
+
+    .fab-btn.off {
+      background: var(--card2);
+      color: var(--muted);
+      border: 2px solid var(--border);
+    }
+
+    .fab-btn:hover {
+      transform: scale(1.08);
+    }
+
+    .timer-bubble {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 8px 14px;
+      text-align: center;
+      min-width: 100px;
+      box-shadow: 0 4px 20px #00000066;
+    }
+
+    .timer-bubble .t-label {
+      font-size: 0.65rem;
+      color: var(--muted);
+      font-family: 'Rajdhani', sans-serif;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .timer-bubble .t-time {
+      font-size: 1.4rem;
+      font-weight: 700;
+      font-family: 'Rajdhani', sans-serif;
+      color: var(--accent);
+      letter-spacing: 2px;
+      transition: color .3s;
+    }
+
+    .timer-bubble .t-time.warn {
+      color: #ef4444;
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: .4;
+      }
+    }
+
+    .timer-bubble.hidden {
+      display: none;
+    }
+
+    .mode-badge-display {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--card2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 3px 12px;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    .mode-badge-display.haath {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: #1e1a0a;
+    }
+
+    .mode-badge-display.submit {
+      border-color: var(--accent2);
+      color: var(--accent2);
+      background: #0d1a2d;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 22px;
+      padding-top: 10px;
+    }
+
+    .header h1 {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    .header p {
+      color: var(--muted);
+      font-size: 0.82rem;
+      margin-top: 4px;
+    }
+
+    .score-bar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      max-width: 720px;
+      margin: 0 auto 18px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 16px;
+      align-items: center;
+    }
+
+    .score-item {
+      text-align: center;
+    }
+
+    .score-item .val {
+      font-size: 1.2rem;
+      font-weight: 700;
+      font-family: 'Rajdhani', sans-serif;
+    }
+
+    .score-item .lbl {
+      font-size: 0.68rem;
+      color: var(--muted);
+    }
+
+    .score-item.c .val {
+      color: var(--correct);
+    }
+
+    .score-item.w .val {
+      color: var(--wrong);
+    }
+
+    .score-item.t .val {
+      color: var(--accent);
+    }
+
+    .score-item.marks .val {
+      color: var(--gold);
+    }
+
+    .score-sep {
+      width: 1px;
+      background: var(--border);
+      height: 28px;
+    }
+
+    .marks-rule {
+      margin-left: auto;
+      background: #1e2a4a;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-size: 0.72rem;
+      color: var(--muted);
+      font-family: 'Rajdhani', sans-serif;
+      white-space: nowrap;
+    }
+
+    .marks-rule span {
+      color: var(--gold);
+      font-weight: 700;
+    }
+
+    .q-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      max-width: 720px;
+      margin: 0 auto 18px;
+    }
+
+    .q-dot {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: 2px solid var(--border);
+      background: var(--card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.78rem;
+      font-family: 'Rajdhani', sans-serif;
+      cursor: pointer;
+      color: var(--muted);
+      transition: all .2s;
+    }
+
+    .q-dot:hover:not(.locked) {
+      border-color: var(--accent2);
+      color: var(--text);
+    }
+
+    .q-dot.active {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: #0f1117;
+    }
+
+    .q-dot.answered-c {
+      border-color: var(--correct);
+      color: var(--correct);
+      background: #0d2d1a;
+    }
+
+    .q-dot.answered-w {
+      border-color: var(--wrong);
+      color: var(--wrong);
+      background: #2d0d0d;
+    }
+
+    .q-dot.visited {
+      border-color: var(--accent2);
+      color: var(--accent2);
+      background: #1e2d4a;
+    }
+
+    .q-dot.skipped {
+      border-color: #444;
+      color: #666;
+      background: var(--card);
+    }
+
+    .q-dot.locked {
+      cursor: default;
+    }
+
+    .quiz-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      max-width: 720px;
+      margin: 0 auto;
+      overflow: hidden;
+      box-shadow: 0 8px 40px #00000055;
+    }
+
+    .question-header {
+      background: linear-gradient(135deg, #1e2a4a, #1a1d27);
+      border-bottom: 1px solid var(--border);
+      padding: 18px 22px 14px;
+    }
+
+    .q-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .q-number {
+      background: var(--accent);
+      color: #0f1117;
+      font-weight: 700;
+      font-size: 0.74rem;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-family: 'Rajdhani', sans-serif;
+      letter-spacing: 1px;
+    }
+
+    .q-tag {
+      color: var(--muted);
+      font-size: 0.74rem;
+      font-family: 'Rajdhani', sans-serif;
+    }
+
+    .lang-toggle {
+      display: flex;
+      gap: 6px;
+      margin-left: auto;
+    }
+
+    .lang-btn {
+      background: var(--card2);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      border-radius: 8px;
+      padding: 3px 10px;
+      font-size: 0.74rem;
+      cursor: pointer;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 600;
+      transition: all .2s;
+    }
+
+    .lang-btn.active {
+      background: var(--accent2);
+      border-color: var(--accent2);
+      color: #fff;
+    }
+
+    .question-text {
+      font-size: .97rem;
+      line-height: 1.8;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .options-wrap {
+      padding: 18px 22px;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--card2);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 13px 16px;
+      margin-bottom: 9px;
+      cursor: pointer;
+      transition: all .22s;
+    }
+
+    .option:hover:not(.disabled) {
+      border-color: var(--accent2);
+      transform: translateX(3px);
+    }
+
+    .option.selected-submit {
+      border-color: var(--accent2);
+      background: #1e2d4a;
+    }
+
+    .option.correct {
+      border-color: var(--correct);
+      background: #0d2d1a;
+    }
+
+    .option.wrong {
+      border-color: var(--wrong);
+      background: #2d0d0d;
+    }
+
+    .option.disabled {
+      cursor: default;
+    }
+
+    .opt-label {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: .83rem;
+      font-family: 'Rajdhani', sans-serif;
+      flex-shrink: 0;
+      color: var(--muted);
+      background: var(--card);
+      transition: all .22s;
+    }
+
+    .option.selected-submit .opt-label {
+      border-color: var(--accent2);
+      color: var(--accent2);
+    }
+
+    .option.correct .opt-label {
+      border-color: var(--correct);
+      color: var(--correct);
+      background: #0d2d1a;
+    }
+
+    .option.wrong .opt-label {
+      border-color: var(--wrong);
+      color: var(--wrong);
+      background: #2d0d0d;
+    }
+
+    .opt-text {
+      font-size: .91rem;
+      line-height: 1.5;
+      flex: 1;
+    }
+
+    .opt-icon {
+      font-size: 1.2rem;
+      flex-shrink: 0;
+      opacity: 0;
+      transition: opacity .2s;
+    }
+
+    .option.correct .opt-icon,
+    .option.wrong .opt-icon {
+      opacity: 1;
+    }
+
+    .answer-section {
+      margin: 0 22px 18px;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      display: none;
+    }
+
+    .answer-section.show {
+      display: block;
+      animation: slideIn .3s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .ans-header {
+      padding: 11px 16px;
+      font-weight: 700;
+      font-size: .86rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: 'Rajdhani', sans-serif;
+    }
+
+    .ans-header.correct-h {
+      background: #0d2d1a;
+      color: var(--correct);
+      border-bottom: 1px solid #22c55e33;
+    }
+
+    .ans-header.wrong-h {
+      background: #2d0d0d;
+      color: var(--wrong);
+      border-bottom: 1px solid #ef444433;
+    }
+
+    .ans-marks-badge {
+      background: #00000033;
+      border-radius: 8px;
+      padding: 2px 10px;
+      font-size: .82rem;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+    }
+
+    .ans-marks-badge.pos {
+      color: #86efac;
+    }
+
+    .ans-marks-badge.neg {
+      color: #fca5a5;
+    }
+
+    .ans-body {
+      padding: 12px 16px;
+      background: #161921;
+    }
+
+    .ans-short {
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 6px;
+      font-size: .9rem;
+    }
+
+    .ans-detail {
+      color: #b0bcd4;
+      font-size: .85rem;
+      line-height: 1.7;
+    }
+
+    .action-bar {
+      padding: 14px 22px 18px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    .btn-next {
+      background: var(--card2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 11px 20px;
+      font-weight: 600;
+      font-size: .88rem;
+      cursor: pointer;
+      font-family: 'Rajdhani', sans-serif;
+      transition: all .2s;
+    }
+
+    .btn-next:hover {
+      border-color: var(--accent2);
+      color: var(--accent2);
+    }
+
+    .btn-skip {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 11px 16px;
+      font-weight: 600;
+      font-size: .82rem;
+      cursor: pointer;
+      font-family: 'Rajdhani', sans-serif;
+      transition: all .2s;
+    }
+
+    .btn-skip:hover {
+      border-color: var(--muted);
+      color: var(--text);
+    }
+
+    .btn-inline-submit {
+      background: var(--accent2);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 11px 20px;
+      font-weight: 700;
+      font-size: .88rem;
+      cursor: pointer;
+      font-family: 'Rajdhani', sans-serif;
+      letter-spacing: 1px;
+      transition: all .2s;
+      box-shadow: 0 2px 12px #3b82f644;
+    }
+
+    .btn-inline-submit:hover {
+      background: #2563eb;
+      transform: translateY(-1px);
+    }
+
+    .btn-inline-submit:disabled {
+      background: #555;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .mode-hint {
+      color: var(--muted);
+      font-size: .76rem;
+      font-style: italic;
+      width: 100%;
+      margin-top: 2px;
+    }
+
+    .result-screen {
+      display: none;
+      max-width: 720px;
+      margin: 0 auto;
+      animation: slideIn .4s ease;
+    }
+
+    .result-screen.show {
+      display: block;
+    }
+
+    .result-hero {
+      background: linear-gradient(135deg, #1e2a4a, #1a1d27);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 32px 28px;
+      text-align: center;
+      margin-bottom: 18px;
+      box-shadow: 0 8px 40px #00000055;
+    }
+
+    .result-emoji {
+      font-size: 3rem;
+      margin-bottom: 10px;
+    }
+
+    .result-title {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .result-sub {
+      color: var(--muted);
+      font-size: .84rem;
+      margin-bottom: 24px;
+    }
+
+    .result-big-score {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 4rem;
+      font-weight: 700;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .result-out-of {
+      color: var(--muted);
+      font-size: .85rem;
+      margin-bottom: 20px;
+    }
+
+    .result-pct-bar {
+      background: var(--border);
+      border-radius: 99px;
+      height: 10px;
+      margin-bottom: 8px;
+      overflow: hidden;
+    }
+
+    .result-pct-fill {
+      height: 100%;
+      border-radius: 99px;
+      background: linear-gradient(90deg, var(--accent2), var(--gold));
+      transition: width 1.2s ease;
+    }
+
+    .result-pct-label {
+      font-size: .8rem;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+
+    .result-stats {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .rstat {
+      background: #00000033;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 18px;
+      text-align: center;
+      min-width: 80px;
+    }
+
+    .rstat .rv {
+      font-size: 1.5rem;
+      font-weight: 700;
+      font-family: 'Rajdhani', sans-serif;
+    }
+
+    .rstat .rl {
+      font-size: .7rem;
+      color: var(--muted);
+    }
+
+    .rstat.rc .rv {
+      color: var(--correct);
+    }
+
+    .rstat.rw .rv {
+      color: var(--wrong);
+    }
+
+    .rstat.rs .rv {
+      color: var(--muted);
+    }
+
+    .rstat.rm .rv {
+      color: var(--gold);
+    }
+
+    .rstat.clickable {
+      cursor: pointer;
+      transition: all .2s;
+    }
+
+    .rstat.clickable:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px #00000055;
+    }
+
+    .rstat.rc.active-filter {
+      box-shadow: 0 0 0 2px var(--correct);
+      background: #0d2d1a;
+    }
+
+    .rstat.rw.active-filter {
+      box-shadow: 0 0 0 2px var(--wrong);
+      background: #2d0d0d;
+    }
+
+    .rstat.rs.active-filter {
+      box-shadow: 0 0 0 2px var(--muted);
+      background: #1e2030;
+    }
+
+    .rstat .click-hint {
+      font-size: .6rem;
+      color: var(--muted);
+      opacity: .6;
+      display: block;
+      margin-top: 2px;
+    }
+
+    .result-mode-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 20px;
+      padding: 5px 16px;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: 0.82rem;
+      margin-bottom: 16px;
+    }
+
+    .result-mode-badge.haath {
+      background: #1e1a0a;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+    }
+
+    .result-mode-badge.submit {
+      background: #0d1a2d;
+      border: 1px solid var(--accent2);
+      color: var(--accent2);
+    }
+
+    .result-btns {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-see-details {
+      background: var(--card2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 13px 24px;
+      font-weight: 600;
+      font-size: .9rem;
+      cursor: pointer;
+      font-family: 'Rajdhani', sans-serif;
+      transition: all .2s;
+    }
+
+    .btn-see-details:hover,
+    .btn-see-details.active {
+      border-color: var(--accent2);
+      color: var(--accent2);
+      background: #1e2d4a;
+    }
+
+    .btn-re-attempt {
+      background: var(--accent);
+      color: #0f1117;
+      border: none;
+      border-radius: 12px;
+      padding: 13px 24px;
+      font-weight: 700;
+      font-size: .9rem;
+      cursor: pointer;
+      font-family: 'Rajdhani', sans-serif;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: all .2s;
+    }
+
+    .btn-re-attempt:hover {
+      background: #d97706;
+      transform: translateY(-1px);
+    }
+
+    .filter-bar {
+      display: none;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 16px;
+      padding: 14px 16px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+
+    .filter-bar.show {
+      display: flex;
+    }
+
+    .filter-bar-label {
+      width: 100%;
+      text-align: center;
+      font-size: .72rem;
+      color: var(--muted);
+      font-family: 'Rajdhani', sans-serif;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .btn-filter {
+      border-radius: 10px;
+      padding: 9px 16px;
+      font-weight: 700;
+      font-size: .82rem;
+      cursor: pointer;
+      font-family: 'Rajdhani', sans-serif;
+      border: 2px solid;
+      transition: all .2s;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-filter .fc {
+      font-size: .72rem;
+      opacity: .8;
+    }
+
+    .btn-filter.all-f {
+      border-color: var(--accent2);
+      color: var(--accent2);
+    }
+
+    .btn-filter.all-f:hover,
+    .btn-filter.all-f.active {
+      background: var(--accent2);
+      color: #fff;
+    }
+
+    .btn-filter.correct-f {
+      border-color: var(--correct);
+      color: var(--correct);
+    }
+
+    .btn-filter.correct-f:hover,
+    .btn-filter.correct-f.active {
+      background: var(--correct);
+      color: #fff;
+    }
+
+    .btn-filter.wrong-f {
+      border-color: var(--wrong);
+      color: var(--wrong);
+    }
+
+    .btn-filter.wrong-f:hover,
+    .btn-filter.wrong-f.active {
+      background: var(--wrong);
+      color: #fff;
+    }
+
+    .btn-filter.skip-f {
+      border-color: var(--muted);
+      color: var(--muted);
+    }
+
+    .btn-filter.skip-f:hover,
+    .btn-filter.skip-f.active {
+      background: var(--muted);
+      color: #111;
+    }
+
+    .details-section {
+      display: none;
+    }
+
+    .details-section.show {
+      display: block;
+    }
+
+    .no-filter-result {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--muted);
+      font-size: .9rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      margin-bottom: 14px;
+    }
+
+    .no-filter-result .nfr-icon {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    .detail-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      margin-bottom: 14px;
+      overflow: hidden;
+    }
+
+    .detail-card-header {
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    .dc-correct-header {
+      background: #0d2d1a;
+    }
+
+    .dc-wrong-header {
+      background: #2d0d0d;
+    }
+
+    .dc-skip-header {
+      background: #1a1d27;
+    }
+
+    .dc-qnum {
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: .78rem;
+      background: #00000033;
+      border-radius: 8px;
+      padding: 3px 10px;
+      color: var(--text);
+    }
+
+    .dc-result-badge {
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: .78rem;
+      padding: 3px 12px;
+      border-radius: 20px;
+      margin-left: auto;
+    }
+
+    .dc-result-badge.correct {
+      background: var(--correct);
+      color: #fff;
+    }
+
+    .dc-result-badge.wrong {
+      background: var(--wrong);
+      color: #fff;
+    }
+
+    .dc-result-badge.skip {
+      background: var(--border);
+      color: var(--muted);
+    }
+
+    .dc-marks {
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: .9rem;
+    }
+
+    .dc-marks.pos {
+      color: var(--correct);
+    }
+
+    .dc-marks.neg {
+      color: var(--wrong);
+    }
+
+    .dc-marks.zero {
+      color: var(--muted);
+    }
+
+    .detail-q-text {
+      padding: 14px 16px 10px;
+      font-size: .9rem;
+      line-height: 1.7;
+      color: var(--text);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .detail-opts {
+      padding: 10px 16px;
+    }
+
+    .detail-opt {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      margin-bottom: 5px;
+      font-size: .86rem;
+      border: 1px solid transparent;
+    }
+
+    .detail-opt.dco {
+      background: #0d2d1a;
+      border-color: var(--correct);
+    }
+
+    .detail-opt.dcw {
+      background: #2d0d0d;
+      border-color: var(--wrong);
+    }
+
+    .detail-opt-lbl {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: .72rem;
+      font-family: 'Rajdhani', sans-serif;
+      flex-shrink: 0;
+      margin-top: 2px;
+      background: var(--card2);
+      color: var(--muted);
+    }
+
+    .detail-opt.dco .detail-opt-lbl {
+      background: var(--correct);
+      color: #fff;
+    }
+
+    .detail-opt.dcw .detail-opt-lbl {
+      background: var(--wrong);
+      color: #fff;
+    }
+
+    .detail-opt-note {
+      font-size: .72rem;
+      color: var(--muted);
+      display: block;
+      margin-top: 2px;
+    }
+
+    .detail-expl {
+      padding: 12px 16px;
+      background: #161921;
+      border-top: 1px solid var(--border);
+      font-size: .84rem;
+      color: #b0bcd4;
+      line-height: 1.7;
+    }
+
+    .detail-expl strong {
+      color: var(--gold);
+      display: block;
+      margin-bottom: 4px;
+      font-family: 'Rajdhani', sans-serif;
+    }
+
+    .toast-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #00000088;
+      z-index: 9998;
+    }
+
+    .toast-overlay.show {
+      display: block;
+    }
+
+    .toast {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 32px;
+      text-align: center;
+      z-index: 9999;
+      box-shadow: 0 20px 60px #000000aa;
+      max-width: 340px;
+      width: 90%;
+    }
+
+    .toast.show {
+      display: block;
+      animation: popIn .3s ease;
+    }
+
+    @keyframes popIn {
+      from {
+        transform: translate(-50%, -50%) scale(.85);
+        opacity: 0;
+      }
+
+      to {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+      }
+    }
+
+    .toast h3 {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1.4rem;
+      color: var(--wrong);
+      margin-bottom: 8px;
+    }
+
+    .toast p {
+      color: var(--muted);
+      font-size: .88rem;
+      margin-bottom: 18px;
+      line-height: 1.6;
+    }
+
+    .toast .btn-ok {
+      background: var(--accent);
+      color: #0f1117;
+      border: none;
+      border-radius: 10px;
+      padding: 11px 28px;
+      font-weight: 700;
+      font-size: .9rem;
+      cursor: pointer;
+      font-family: 'Rajdhani', sans-serif;
+      width: 100%;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border: 2px solid #ffffff44;
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin .6s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .spinner-dark {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border: 2px solid #00000044;
+      border-top-color: #0f1117;
+      border-radius: 50%;
+      animation: spin .6s linear infinite;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: .75rem;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 600;
+    }
+
+    .status-badge.sending {
+      background: #1e2d4a;
+      color: var(--accent2);
+    }
+
+    .status-badge.sent {
+      background: #0d2d1a;
+      color: var(--correct);
+    }
+
+    .status-badge.error {
+      background: #2d0d0d;
+      color: var(--wrong);
+    }
+
+    .pw-loading-info {
+      text-align: center;
+      padding: 10px;
+      color: var(--muted);
+      font-size: .8rem;
+      font-family: 'Rajdhani', sans-serif;
+    }
+
+    @media(max-width:480px) {
+
+      .question-header,
+      .options-wrap,
+      .action-bar,
+      .answer-section {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+
+      .answer-section {
+        margin-left: 14px;
+        margin-right: 14px;
+      }
+
+      .result-big-score {
+        font-size: 3rem;
+      }
+
+      .screen-card {
+        padding: 24px 18px;
+      }
+
+      .btn-filter {
+        font-size: .76rem;
+        padding: 8px 12px;
+      }
+
+      .fab-register-btn {
+        font-size: .88rem;
+        padding: 14px 28px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ══ PREVIEW SCREEN ══ -->
+  <div class="screen active" id="screenPreview" style="position:relative;z-index:auto;overflow-y:auto;">
+    <div class="preview-hero">
+      <div class="preview-badge">📚 UPSC MCQ Practice</div>
+      <div class="preview-title">History Test 1</div>
+      <div
+        style="color:var(--gold);font-family:'Rajdhani',sans-serif;font-size:1rem;margin-bottom:8px;letter-spacing:1px;">
+        प्राक् इतिहास — Rock Art</div>
+      <div class="preview-sub">नीचे sample questions देखें — attempt करने के लिए Register करें</div>
+      <div class="preview-stats">
+        <div class="pstat">
+          <div class="pv" id="previewQCount">8</div>
+          <div class="pl">Questions</div>
+        </div>
+        <div class="pstat">
+          <div class="pv">+2</div>
+          <div class="pl">सही</div>
+        </div>
+        <div class="pstat">
+          <div class="pv">−0.66</div>
+          <div class="pl">गलत</div>
+        </div>
+        <div class="pstat">
+          <div class="pv">16 min</div>
+          <div class="pl">Time</div>
+        </div>
+      </div>
+      <button class="btn-start-preview" onclick="handleStartClick()">🚀 Quiz Attempt करें →</button>
+    </div>
+    <div class="preview-mcq-list" id="previewList"></div>
+    <div class="preview-cta">
+      <p>✨ सभी questions attempt करने के लिए Register करें — Free है!</p>
+      <button class="btn-start-preview" onclick="handleStartClick()" style="padding:14px 32px;font-size:.95rem;">📝
+        Register &amp; Start →</button>
+    </div>
+  </div>
+
+  <!-- ✅ FAB REGISTER BUTTON -->
+  <div class="fab-register" id="fabRegister">
+    <div class="fab-register-tip">✨ Free Registration — सभी Questions Unlock</div>
+    <button class="fab-register-btn" onclick="handleStartClick()">📝 REGISTER &amp; START →</button>
+  </div>
+
+  <!-- ══ REGISTRATION ══ -->
+  <div class="screen" id="screenReg">
+    <div class="screen-card">
+      <div class="screen-title">📝 Registration</div>
+      <div class="screen-sub">एक बार register करें — quiz के लिए तैयार हों</div>
+      <div class="form-group">
+        <label class="form-label">पूरा नाम *</label>
+        <input class="form-input" id="regName" type="text" placeholder="आपका नाम लिखें" maxlength="60">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Mobile Number *</label>
+        <input class="form-input" id="regMobile" type="tel" placeholder="10-digit number" maxlength="10">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Gender *</label>
+        <div class="gender-row">
+          <div class="gender-opt" id="gBoy" onclick="selectGender('boys')">👦 Boy</div>
+          <div class="gender-opt" id="gGirl" onclick="selectGender('girls')">👧 Girl</div>
+        </div>
+      </div>
+      <div class="form-error" id="regError">⚠ सभी fields भरें</div>
+      <button class="btn-primary" id="regBtn" onclick="submitRegistration()">Register करें →</button>
+      <button class="btn-secondary" onclick="showScreen('screenPreview')">← वापस जाएं</button>
+    </div>
+  </div>
+
+  <!-- ══ PASSWORD ══ -->
+  <div class="screen" id="screenPW">
+    <div class="screen-card">
+      <div class="screen-title">🔐 Password</div>
+      <div class="screen-sub">Test शुरू करने के लिए password डालें</div>
+      <div class="form-group pw-input-wrap">
+        <label class="form-label">Test Password</label>
+        <input class="form-input" id="pwInput" type="password" placeholder="Password यहाँ डालें"
+          onkeydown="if(event.key==='Enter') checkPassword()">
+        <span class="pw-toggle" onclick="togglePWVis()">👁</span>
+      </div>
+      <div class="pw-loading-info" id="pwLoadingInfo" style="display:none;">
+        <span class="spinner-dark" style="border-top-color:var(--accent);border-color:var(--border);"></span>
+        &nbsp;Password verify हो रहा है...
+      </div>
+      <div class="form-error" id="pwError">❌ Password गलत है — नीचे दिए button से contact करें</div>
+      <button class="btn-primary" id="pwBtn" onclick="checkPassword()">
+        <span id="pwBtnSpinner" class="spinner-dark" style="display:none;border-top-color:#0f1117;"></span>
+        <span id="pwBtnText">🔓 Start Test</span>
+      </button>
+      <div id="pwContactBtns" style="display:none;margin-top:14px;">
+        <div style="text-align:center;font-size:.78rem;color:var(--muted);margin-bottom:10px;">Password के लिए संपर्क
+          करें:</div>
+        <div class="pw-contact-btns" id="pwContactRow"></div>
+      </div>
+      <button class="btn-secondary" onclick="showScreen('screenPreview')">← वापस जाएं</button>
+    </div>
+  </div>
+
+  <!-- ══ EDIT PROFILE ══ -->
+  <div class="screen" id="screenEdit">
+    <div class="screen-card">
+      <div class="screen-title">✏️ Edit Profile</div>
+      <div class="screen-sub">अपनी जानकारी update करें</div>
+      <div class="form-group">
+        <label class="form-label">पूरा नाम *</label>
+        <input class="form-input" id="editName" type="text" maxlength="60">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Mobile Number *</label>
+        <input class="form-input" id="editMobile" type="tel" maxlength="10">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Gender *</label>
+        <div class="gender-row">
+          <div class="gender-opt" id="eBoy" onclick="selectGenderEdit('boys')">👦 Boy</div>
+          <div class="gender-opt" id="eGirl" onclick="selectGenderEdit('girls')">👧 Girl</div>
+        </div>
+      </div>
+      <div class="form-error" id="editError">⚠ सभी fields भरें</div>
+      <button class="btn-primary" id="editBtn" onclick="submitEdit()">Save Changes →</button>
+      <button class="btn-secondary" onclick="closeEdit()">Cancel</button>
+    </div>
+  </div>
+
+  <!-- ══ PROFILE FAB ══ -->
+  <div class="profile-fab" id="profileFab" onclick="toggleProfileDropdown()" style="display:none;">
+    <span class="pf-placeholder" id="pfEmoji">👤</span>
+  </div>
+  <div class="profile-dropdown" id="profileDropdown">
+    <div class="pd-name" id="pdName">—</div>
+    <div class="pd-mobile" id="pdMobile">—</div>
+    <div class="pd-gender" id="pdGender">—</div>
+    <div class="pd-sep"></div>
+    <button class="pd-btn" onclick="openEdit()">✏️ Edit Profile</button>
+    <button class="pd-btn" onclick="closeDropdownAndNewReg()">🔄 New Registration</button>
+  </div>
+
+  <!-- ══ TIMER FAB ══ -->
+  <div class="fab-timer" id="fabTimer" style="display:none;">
+    <button class="fab-btn on" id="fabBtn" onclick="toggleTimer()">⏱</button>
+    <div class="timer-bubble" id="timerBubble">
+      <div class="t-label">Time Left</div>
+      <div class="t-time" id="timerDisplay">--:--:--</div>
+    </div>
+  </div>
+
+  <!-- ══ TOAST ══ -->
+  <div class="toast-overlay" id="toastOverlay"></div>
+  <div class="toast" id="autoSubmitToast">
+    <h3>⏰ Time's Up!</h3>
+    <p>समय समाप्त!<br>Quiz auto-submit हो गई।</p>
+    <button class="btn-ok" onclick="closeToast()">Result देखें →</button>
+  </div>
+
+  <!-- ══ MAIN QUIZ ══ -->
+  <div id="mainQuiz" style="display:none;">
+    <div class="header">
+      <h1 onclick="downloadMCQs()">📚 UPSC MCQ Practice</h1>
+      <p id="testNameBadge">History Test 1 — प्राक् इतिहास &nbsp;|&nbsp; <b style="color:var(--correct)">+2</b> सही
+        &nbsp;/&nbsp; <b style="color:var(--wrong)">−0.66</b> गलत</p>
+      <div id="modeBadgeDisplay" class="mode-badge-display"></div>
+    </div>
+
+    <div class="mode-switch-wrap visible" id="modeSwitchWrap">
+      <div class="mode-switch-label">📋 Test Mode चुनें</div>
+      <div class="mode-toggle">
+        <button class="mode-btn active-mode" id="modeHaathBtn" onclick="setMode('haath')">
+          <span class="mode-icon">⚡</span>
+          <span class="mode-name">हाथो-हाथ</span>
+          <span class="mode-desc">Click करते ही Answer</span>
+        </button>
+        <button class="mode-btn" id="modeSubmitBtn" onclick="setMode('submit')">
+          <span class="mode-icon">📝</span>
+          <span class="mode-name">Submit Mode</span>
+          <span class="mode-desc">अंत में Submit करें</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="score-bar" id="scoreBar">
+      <div class="score-item t">
+        <div class="val" id="totalQ">0</div>
+        <div class="lbl">Total</div>
+      </div>
+      <div class="score-sep"></div>
+      <div class="score-item c">
+        <div class="val" id="correctQ">0</div>
+        <div class="lbl">सही ✓</div>
+      </div>
+      <div class="score-sep"></div>
+      <div class="score-item w">
+        <div class="val" id="wrongQ">0</div>
+        <div class="lbl">गलत ✗</div>
+      </div>
+      <div class="score-sep"></div>
+      <div class="score-item marks">
+        <div class="val" id="marksVal">0.00</div>
+        <div class="lbl">Marks</div>
+      </div>
+      <div class="marks-rule"><span>+2</span> सही &nbsp;|&nbsp; <span>−0.66</span> गलत</div>
+    </div>
+
+    <div class="q-nav" id="qNav"></div>
+
+    <div class="quiz-card" id="quizCard">
+      <div class="question-header">
+        <div class="q-meta">
+          <span class="q-number" id="qLabel">Q 1</span>
+          <span class="q-tag" id="qTagText"></span>
+          <div class="lang-toggle">
+            <button class="lang-btn" id="btnEN" onclick="setLang('en')">EN</button>
+            <button class="lang-btn active" id="btnHI" onclick="setLang('hi')">हिं</button>
+          </div>
+        </div>
+        <div class="question-text" id="questionText"></div>
+      </div>
+      <div class="options-wrap" id="optionsWrap"></div>
+      <div class="answer-section" id="answerSection">
+        <div class="ans-header" id="ansHeader">
+          <span id="ansHeaderText"></span>
+          <span class="ans-marks-badge" id="ansMarksBadge"></span>
+        </div>
+        <div class="ans-body">
+          <div class="ans-short" id="ansShort"></div>
+          <div class="ans-detail" id="ansDetail"></div>
+        </div>
+      </div>
+      <div class="action-bar">
+        <button class="btn-next" id="nextBtn" onclick="nextQuestion()" style="display:none;">Next →</button>
+        <button class="btn-skip" id="skipBtn" onclick="skipQuestion()" style="display:none;">Skip →</button>
+        <button class="btn-inline-submit" id="inlineSubmitBtn" onclick="finalSubmitMode()" style="display:none;">✅
+          Submit Quiz</button>
+        <div class="mode-hint" id="modeHint"></div>
+      </div>
+    </div>
+
+    <div class="result-screen" id="resultScreen">
+      <div class="result-hero">
+        <div class="result-emoji" id="resultEmoji">🎯</div>
+        <div class="result-title">Quiz Complete!</div>
+        <div class="result-sub" id="resultSubtitle">यहाँ आपका परिणाम है</div>
+        <div id="resultModeBadge" class="result-mode-badge"></div>
+        <div class="result-big-score" id="resultBigScore">0.00</div>
+        <div class="result-out-of" id="resultOutOf">out of 0 marks</div>
+        <div class="result-pct-bar">
+          <div class="result-pct-fill" id="resultPctFill" style="width:0%"></div>
+        </div>
+        <div class="result-pct-label" id="resultPctLabel">0% Accuracy</div>
+        <div id="resultSendStatus" style="margin-bottom:16px;"></div>
+        <div class="result-stats">
+          <div class="rstat rc clickable" id="statCorrect" onclick="filterDetails('correct')">
+            <div class="rv" id="rCorrect">0</div>
+            <div class="rl">सही ✓</div><span class="click-hint">👆 filter</span>
+          </div>
+          <div class="rstat rw clickable" id="statWrong" onclick="filterDetails('wrong')">
+            <div class="rv" id="rWrong">0</div>
+            <div class="rl">गलत ✗</div><span class="click-hint">👆 filter</span>
+          </div>
+          <div class="rstat rs clickable" id="statSkip" onclick="filterDetails('skip')">
+            <div class="rv" id="rSkip">0</div>
+            <div class="rl">छोड़े</div><span class="click-hint">👆 filter</span>
+          </div>
+          <div class="rstat rm">
+            <div class="rv" id="rMarks">0.00</div>
+            <div class="rl">Marks</div>
+          </div>
+        </div>
+        <div class="result-btns">
+          <button class="btn-see-details" id="btnAllDetails" onclick="filterDetails('all')">📋 सभी देखें</button>
+          <button class="btn-re-attempt" onclick="reAttempt()">🔄 Re-Attempt</button>
+        </div>
+      </div>
+      <div class="filter-bar" id="filterBar">
+        <div class="filter-bar-label">Filter Questions</div>
+        <button class="btn-filter all-f" id="fBtn-all" onclick="filterDetails('all')">📋 सभी <span class="fc"
+            id="fc-all"></span></button>
+        <button class="btn-filter correct-f" id="fBtn-correct" onclick="filterDetails('correct')">✅ सही <span class="fc"
+            id="fc-correct"></span></button>
+        <button class="btn-filter wrong-f" id="fBtn-wrong" onclick="filterDetails('wrong')">❌ गलत <span class="fc"
+            id="fc-wrong"></span></button>
+        <button class="btn-filter skip-f" id="fBtn-skip" onclick="filterDetails('skip')">— Skip <span class="fc"
+            id="fc-skip"></span></button>
+      </div>
+      <div class="details-section" id="detailsSection"></div>
+    </div>
+  </div>
+
+  <script>
+    // ════════════════════════════════════════════════════════
+    //  CONFIG
+    // ════════════════════════════════════════════════════════
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzFUm5H88t3ynV_Xo4y8DZGdv7aJhvHL1NlaXcYTcr8RkNQicwDk5zJMTPckl3zFbIvIQ/exec";
+    const TEST_NAME = "History Test 1 — प्राक् इतिहास";
+    const CORRECT_M = 2;
+    const WRONG_M = -(2 / 3);
+    const TOTAL_Q_REF = 100;
+    const TOTAL_TIME = 2 * 3600;
+
+    // ════════════════════════════════════════════════════════
+    //  JSONP API
+    // ════════════════════════════════════════════════════════
+    let _cbCount = 0;
+    function api(params) {
+      return new Promise(resolve => {
+        const cbName = "cb" + Date.now() + (++_cbCount);
+        const timer = setTimeout(() => { delete window[cbName]; resolve({ ok: false, error: "Timeout" }); }, 15000);
+        window[cbName] = data => {
+          clearTimeout(timer); delete window[cbName];
+          const s = document.getElementById("js" + cbName); if (s) s.remove();
+          resolve(data);
+        };
+        params.callback = cbName;
+        const qs = Object.keys(params).map(k => encodeURIComponent(k) + "=" + encodeURIComponent(params[k])).join("&");
+        const sc = document.createElement("script");
+        sc.id = "js" + cbName;
+        sc.src = APPS_SCRIPT_URL + "?" + qs;
+        sc.onerror = () => { clearTimeout(timer); delete window[cbName]; sc.remove(); resolve({ ok: false, error: "Script load failed" }); };
+        document.head.appendChild(sc);
+      });
+    }
+
+    // ════════════════════════════════════════════════════════
+    //  ✅ QUESTIONS — flat array (nested nahi)
+    // ════════════════════════════════════════════════════════
+    const questions = [
+      {
+        "question": "Arrange the following countries located north of the Equator in order from west to east:\n1. Venezuela\n2. Guyana\n3. Colombia\n4. Suriname",
+        "questionHindi": "भूमध्य रेखा के उत्तर में स्थित निम्नलिखित देशों को पश्चिम से पूर्व की ओर क्रम में व्यवस्थित करें:\n1. वेनेजुएला\n2. गुयाना\n3. कोलंबिया\n4. सूरीनाम",
+        "options": [
+          "3 – 1 – 2 – 4",
+          "1 – 3 – 2 – 4",
+          "3 – 2 – 1 – 4",
+          "1 – 2 – 3 – 4"
+        ],
+        "optionsHindi": [
+          "3 – 1 – 2 – 4",
+          "1 – 3 – 2 – 4",
+          "3 – 2 – 1 – 4",
+          "1 – 2 – 3 – 4"
+        ],
+        "answer": 0,
+        "explanation": "The correct west to east sequence is: Colombia → Venezuela → Guyana → Suriname. Colombia lies farthest west with a Pacific coastline, followed by Venezuela, then Guyana, and finally Suriname toward the east. French Guiana lies even further east but is not included in the list.",
+        "explanationHindi": "सही पश्चिम से पूर्व क्रम है: कोलंबिया → वेनेजुएला → गुयाना → सूरीनाम। कोलंबिया सबसे पश्चिम में है (प्रशांत महासागर से जुड़ा), इसके बाद वेनेजुएला, फिर गुयाना और अंत में सूरीनाम आता है। सूरीनाम के आगे फ्रेंच गयाना स्थित है, लेकिन वह सूची में शामिल नहीं है।"
+      },
+      {
+        "question": "Which of the following countries are located entirely north of the Equator?\n1. Venezuela\n2. Guyana\n3. Suriname\n4. Brazil",
+        "questionHindi": "निम्नलिखित में से कौन-से देश पूर्णतः भूमध्य रेखा के उत्तर में स्थित हैं?\n1. वेनेजुएला\n2. गुयाना\n3. सूरीनाम\n4. ब्राज़ील",
+        "options": [
+          "1, 2 and 3 only",
+          "2, 3 and 4 only",
+          "1 and 4 only",
+          "3 and 4 only"
+        ],
+        "optionsHindi": [
+          "केवल 1, 2 और 3",
+          "केवल 2, 3 और 4",
+          "केवल 1 और 4",
+          "केवल 3 और 4"
+        ],
+        "answer": 0,
+        "explanation": "Venezuela, Guyana, and Suriname lie completely north of the Equator. Brazil is crossed by the Equator, so it is not entirely in the Northern Hemisphere.",
+        "explanationHindi": "वेनेजुएला, गुयाना और सूरीनाम पूर्णतः भूमध्य रेखा के उत्तर में स्थित हैं। जबकि ब्राज़ील से भूमध्य रेखा गुजरती है, इसलिए यह पूरी तरह उत्तरी गोलार्ध में नहीं है।"
+      },
+      {
+        "question": "Which of the following countries is NOT divided by the Equator?",
+        "questionHindi": "निम्नलिखित में से कौन-सा देश भूमध्य रेखा द्वारा विभाजित नहीं होता है?",
+        "options": [
+          "Brazil",
+          "Ecuador",
+          "Suriname",
+          "Peru"
+        ],
+        "optionsHindi": [
+          "ब्राज़ील",
+          "इक्वाडोर",
+          "सूरीनाम",
+          "पेरू"
+        ],
+        "answer": 2,
+        "explanation": "The Equator passes through Brazil, Ecuador, and Peru. Suriname lies completely north of the Equator and is not divided by it.",
+        "explanationHindi": "भूमध्य रेखा ब्राज़ील, इक्वाडोर और पेरू से होकर गुजरती है। सूरीनाम पूरी तरह भूमध्य रेखा के उत्तर में स्थित है, इसलिए यह इसके द्वारा विभाजित नहीं होता है।"
+      },
+    ];
+
+    // ════════════════════════════════════════════════════════
+    //  STATE
+    // ════════════════════════════════════════════════════════
+    let student = null, currentQ = 0, lang = 'hi';
+    let answered = [], scores = { correct: 0, wrong: 0, marks: 0 };
+    let timerOn = true, timerInterval = null, timeLeft = 0, quizStart = 0;
+    let quizLocked = false, quizDone = false, activeFilter = null;
+    let selectedGender = "", selectedGenderEdit = "";
+    let pwWrongCount = 0, correctPassword = "";
+    let isVerifyingPassword = false;
+    let currentMode = 'haath';
+    let selectedOptions = [];
+
+    // ════════════════════════════════════════════════════════
+    //  BOOT
+    // ════════════════════════════════════════════════════════
+    window.onload = function () {
+      buildPreview();
+      document.getElementById("previewQCount").textContent = questions.length;
+      const saved = localStorage.getItem("upsc_student");
+      if (saved) {
+        student = JSON.parse(saved);
+        updateProfileFAB();
+      }
+      showScreen("screenPreview");
+      updateFabRegisterVisibility();
+    };
+
+    function updateFabRegisterVisibility() {
+      const fab = document.getElementById("fabRegister");
+      if (document.getElementById("screenPreview").classList.contains("active")) {
+        fab.classList.add("visible");
+      } else {
+        fab.classList.remove("visible");
+      }
+    }
+
+    // ════════════════════════════════════════════════════════
+    //  PREVIEW
+    // ════════════════════════════════════════════════════════
+    function buildPreview() {
+      const list = document.getElementById("previewList");
+      const LBL = ["A", "B", "C", "D"];
+      questions.forEach((q, i) => {
+        const blurred = i >= 2;
+        const txt = q.questionHindi.replace(/\n/g, "<br>");
+        const optsHTML = q.optionsHindi.map((o, oi) =>
+          `<div class="preview-opt" onclick="handlePreviewOptionClick()"><div class="preview-opt-lbl">${LBL[oi]}</div><span>${o}</span></div>`
+        ).join("");
+        list.innerHTML += `<div class="preview-q-card">
+          <div class="preview-q-header">
+            <span class="preview-q-num">Q ${i + 1}</span>
+            ${blurred ? '<span class="preview-lock">🔒 Register करें</span>' : ''}
+          </div>
+          <div class="${blurred ? 'preview-blur' : ''}">
+            <div class="preview-q-text">${txt}</div>
+            <div class="preview-opts">${optsHTML}</div>
+          </div>
+        </div>`;
+      });
+    }
+
+    function handlePreviewOptionClick() {
+      if (student) { loadPasswordScreen(); } else { showScreen("screenReg"); updateFabRegisterVisibility(); }
+    }
+
+    function handleStartClick() {
+      if (student) { loadPasswordScreen(); } else { showScreen("screenReg"); }
+      updateFabRegisterVisibility();
+    }
+
+    // ════════════════════════════════════════════════════════
+    //  PASSWORD — sirf click pe fetch
+    // ════════════════════════════════════════════════════════
+    function loadPasswordScreen() {
+      correctPassword = "";
+      isVerifyingPassword = false;
+      document.getElementById("pwInput").value = "";
+      document.getElementById("pwError").classList.remove("show");
+      document.getElementById("pwContactBtns").style.display = "none";
+      document.getElementById("pwLoadingInfo").style.display = "none";
+      const btn = document.getElementById("pwBtn");
+      const spinner = document.getElementById("pwBtnSpinner");
+      const btnText = document.getElementById("pwBtnText");
+      btn.disabled = false;
+      spinner.style.display = "none";
+      btnText.textContent = "🔓 Start Test";
+      showScreen("screenPW");
+      updateFabRegisterVisibility();
+      setupContactButtons();
+    }
+
+    function showScreen(id) {
+      document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+      const el = document.getElementById(id); if (el) el.classList.add("active");
+      updateFabRegisterVisibility();
+    }
+
+    function setupContactButtons() {
+      const row = document.getElementById("pwContactRow");
+      const g = student ? student.gender : selectedGender;
+      if (g === "girls") {
+        row.innerHTML = `<button class="btn-whatsapp" onclick="openWhatsApp()">💬 WhatsApp पर Contact करें</button>`;
+      } else {
+        row.innerHTML = `<button class="btn-telegram" onclick="openTelegram()">📲 Telegram पर Contact करें</button>`;
+      }
+    }
+
+    function openWhatsApp() {
+      const msg = encodeURIComponent(`Hello, मुझे UPSC MCQ Quiz (${TEST_NAME}) का password चाहिए।\nनाम: ${student?.name || ''}\nMobile: ${student?.mobile || ''}`);
+      window.open(`https://wa.me/919649346723?text=${msg}`, "_blank");
+    }
+    function openTelegram() { window.open(`https://t.me/upsc_quiz_support`, "_blank"); }
+
+    // ════════════════════════════════════════════════════════
+    //  REGISTRATION
+    // ════════════════════════════════════════════════════════
+    function selectGender(g) {
+      selectedGender = g;
+      document.getElementById("gBoy").className = "gender-opt" + (g === "boys" ? " selected-m" : "");
+      document.getElementById("gGirl").className = "gender-opt" + (g === "girls" ? " selected-f" : "");
+    }
+
+    async function submitRegistration() {
+      const name = document.getElementById("regName").value.trim();
+      const mobile = document.getElementById("regMobile").value.trim();
+      const err = document.getElementById("regError");
+      if (!name || !mobile || mobile.length !== 10 || !selectedGender) {
+        err.textContent = "⚠ सभी fields भरें और 10-digit mobile number दें";
+        err.classList.add("show"); return;
+      }
+      err.classList.remove("show");
+      const btn = document.getElementById("regBtn");
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner-dark" style="border-top-color:#0f1117;"></span>&nbsp; Registering...';
+      const id = "STU_" + Date.now() + "_" + Math.random().toString(36).substr(2, 5).toUpperCase();
+      const r = await api({ action: "register", id, name, mobile, gender: selectedGender, dpUrl: "" });
+      if (r.ok) {
+        student = { id, name, mobile, gender: selectedGender };
+        localStorage.setItem("upsc_student", JSON.stringify(student));
+        updateProfileFAB();
+        loadPasswordScreen();
+      } else {
+        err.textContent = "❌ Server error: " + (r.error || "retry");
+        err.classList.add("show");
+      }
+      btn.disabled = false;
+      btn.innerHTML = "Register करें →";
+    }
+
+    // ════════════════════════════════════════════════════════
+    //  PASSWORD CHECK
+    // ════════════════════════════════════════════════════════
+    function togglePWVis() {
+      const i = document.getElementById("pwInput");
+      i.type = i.type === "password" ? "text" : "password";
+    }
+
+    async function checkPassword() {
+      if (isVerifyingPassword) return;
+      const entered = document.getElementById("pwInput").value.trim();
+      const err = document.getElementById("pwError");
+      const loadingInfo = document.getElementById("pwLoadingInfo");
+      const btn = document.getElementById("pwBtn");
+      const spinner = document.getElementById("pwBtnSpinner");
+      const btnText = document.getElementById("pwBtnText");
+
+      if (!entered) { err.textContent = "⚠ Password डालें"; err.classList.add("show"); return; }
+
+      isVerifyingPassword = true;
+      btn.disabled = true;
+      spinner.style.display = "inline-block";
+      btnText.textContent = "🔒 Verifying...";
+      loadingInfo.style.display = "block";
+      err.classList.remove("show");
+
+      const r = await api({ action: "getPassword", gender: student?.gender || selectedGender });
+
+      if (!r.ok || !r.password) {
+        err.textContent = "❌ Server से password नहीं मिला — Internet check करें";
+        err.classList.add("show");
+        document.getElementById("pwContactBtns").style.display = "block";
+        btn.disabled = false; spinner.style.display = "none"; btnText.textContent = "🔓 Start Test";
+        loadingInfo.style.display = "none"; isVerifyingPassword = false; return;
+      }
+
+      correctPassword = String(r.password);
+      loadingInfo.style.display = "none";
+
+      if (entered === correctPassword) {
+        err.classList.remove("show");
+        document.getElementById("pwContactBtns").style.display = "none";
+        pwWrongCount = 0;
+        api({ action: "logPasswordCorrect", name: student?.name || "", mobile: student?.mobile || "", gender: student?.gender || selectedGender, password: entered });
+        isVerifyingPassword = false; btn.disabled = false; spinner.style.display = "none"; btnText.textContent = "🔓 Start Test";
+        startQuiz();
+      } else {
+        pwWrongCount++;
+        err.textContent = "❌ Password गलत है — नीचे दिए button से contact करें";
+        err.classList.add("show");
+        document.getElementById("pwContactBtns").style.display = "block";
+        const device = navigator.userAgent.substring(0, 80);
+        api({ action: "wrongPassword", studentId: student?.id || "unknown", name: student?.name || "unknown", mobile: student?.mobile || "unknown", gender: student?.gender || selectedGender || "unknown", entered, device });
+        isVerifyingPassword = false; btn.disabled = false; spinner.style.display = "none"; btnText.textContent = "🔓 Start Test";
+      }
+    }
+
+    // ════════════════════════════════════════════════════════
+    //  MODE / EDIT / PROFILE
+    // ════════════════════════════════════════════════════════
+    function setMode(mode) {
+      currentMode = mode;
+      document.getElementById("modeHaathBtn").classList.toggle("active-mode", mode === 'haath');
+      document.getElementById("modeSubmitBtn").classList.toggle("active-mode", mode === 'submit');
+      initQuiz();
+    }
+
+    function selectGenderEdit(g) {
+      selectedGenderEdit = g;
+      document.getElementById("eBoy").className = "gender-opt" + (g === "boys" ? " selected-m" : "");
+      document.getElementById("eGirl").className = "gender-opt" + (g === "girls" ? " selected-f" : "");
+    }
+
+    function openEdit() {
+      closeDropdown();
+      if (!student) return;
+      document.getElementById("editName").value = student.name || "";
+      document.getElementById("editMobile").value = student.mobile || "";
+      selectedGenderEdit = student.gender || "";
+      selectGenderEdit(selectedGenderEdit);
+      showScreen("screenEdit");
+    }
+
+    function closeEdit() { showScreen("screenPW"); }
+
+    async function submitEdit() {
+      const name = document.getElementById("editName").value.trim();
+      const mobile = document.getElementById("editMobile").value.trim();
+      const err = document.getElementById("editError");
+      if (!name || !mobile || mobile.length !== 10 || !selectedGenderEdit) { err.textContent = "⚠ सभी fields भरें"; err.classList.add("show"); return; }
+      err.classList.remove("show");
+      const btn = document.getElementById("editBtn");
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner-dark" style="border-top-color:#0f1117;"></span>&nbsp; Saving...';
+      const r = await api({ action: "editProfile", id: student.id, name, mobile, gender: selectedGenderEdit, dpUrl: "" });
+      if (r.ok) {
+        student = { ...student, name, mobile, gender: selectedGenderEdit };
+        localStorage.setItem("upsc_student", JSON.stringify(student));
+        updateProfileFAB(); loadPasswordScreen();
+      } else {
+        err.textContent = "❌ Error: " + (r.error || "retry"); err.classList.add("show");
+        btn.disabled = false; btn.innerHTML = "Save Changes →";
+      }
+    }
+
+    function updateProfileFAB() {
+      const fab = document.getElementById("profileFab");
+      if (!student) { fab.style.display = "none"; return; }
+      fab.style.display = "flex";
+      document.getElementById("pfEmoji").textContent = student.gender === "girls" ? "👧" : "👦";
+      document.getElementById("pdName").textContent = student.name || "—";
+      document.getElementById("pdMobile").textContent = student.mobile || "—";
+      document.getElementById("pdGender").textContent = student.gender === "girls" ? "👧 Girl" : "👦 Boy";
+    }
+
+    function toggleProfileDropdown() { document.getElementById("profileDropdown").classList.toggle("open"); }
+    function closeDropdown() { document.getElementById("profileDropdown").classList.remove("open"); }
+    document.addEventListener("click", e => {
+      if (!e.target.closest("#profileFab") && !e.target.closest("#profileDropdown")) closeDropdown();
+    });
+
+    function closeDropdownAndNewReg() {
+      closeDropdown();
+      localStorage.removeItem("upsc_student");
+      student = null; selectedGender = "";
+      document.getElementById("regName").value = "";
+      document.getElementById("regMobile").value = "";
+      document.getElementById("gBoy").className = "gender-opt";
+      document.getElementById("gGirl").className = "gender-opt";
+      document.getElementById("profileFab").style.display = "none";
+      showScreen("screenPreview");
+    }
+
+    // ════════════════════════════════════════════════════════
+    //  START QUIZ
+    // ════════════════════════════════════════════════════════
+    function startQuiz() {
+      document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+      document.getElementById("mainQuiz").style.display = "block";
+      document.getElementById("fabTimer").style.display = "flex";
+      document.getElementById("fabRegister").classList.remove("visible");
+      updateProfileFAB();
+      currentMode = 'haath';
+      document.getElementById("modeHaathBtn").classList.add("active-mode");
+      document.getElementById("modeSubmitBtn").classList.remove("active-mode");
+      initQuiz();
+    }
+
+    // ════════════════════════════════════════════════════════
+    //  QUIZ ENGINE
+    // ════════════════════════════════════════════════════════
+    function initQuiz() {
+      answered = questions.map(() => null);
+      selectedOptions = questions.map(() => null);
+      scores = { correct: 0, wrong: 0, marks: 0 };
+      quizLocked = false; quizDone = false; currentQ = 0; activeFilter = null;
+      timeLeft = Math.round((questions.length / TOTAL_Q_REF) * TOTAL_TIME);
+      quizStart = Date.now();
+      clearInterval(timerInterval);
+      document.getElementById("quizCard").style.display = "";
+      document.getElementById("resultScreen").classList.remove("show");
+      document.getElementById("detailsSection").innerHTML = "";
+      document.getElementById("detailsSection").classList.remove("show");
+      document.getElementById("filterBar").classList.remove("show");
+      document.getElementById("qNav").style.display = "";
+      document.getElementById("scoreBar").style.display = "";
+      updateModeBadge();
+      if (currentMode === 'submit') {
+        document.getElementById("correctQ").textContent = "—";
+        document.getElementById("wrongQ").textContent = "—";
+        document.getElementById("marksVal").textContent = "—";
+      }
+      buildNav(); loadQuestion(0); updateScore(); updateTimerDisplay(); startTimer();
+    }
+
+    function updateModeBadge() {
+      const badge = document.getElementById("modeBadgeDisplay");
+      if (currentMode === 'haath') {
+        badge.className = "mode-badge-display haath";
+        badge.textContent = "⚡ हाथो-हाथ Mode — Click करते ही Answer दिखेगा";
+      } else {
+        badge.className = "mode-badge-display submit";
+        badge.textContent = "📝 Submit Mode — सभी attempt करें, फिर Submit करें";
+      }
+    }
+
+    function fmtTime(s) {
+      const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
+      return [h, m, sec].map(x => String(x).padStart(2, '0')).join(':');
+    }
+
+    function startTimer() {
+      clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        if (!timerOn || quizDone) return;
+        timeLeft--; updateTimerDisplay();
+        if (timeLeft <= 0) { clearInterval(timerInterval); autoSubmit(); }
+      }, 1000);
+    }
+
+    function updateTimerDisplay() {
+      const el = document.getElementById("timerDisplay");
+      el.textContent = fmtTime(Math.max(0, timeLeft));
+      el.className = "t-time" + (timeLeft <= 300 ? " warn" : "");
+    }
+
+    function toggleTimer() {
+      timerOn = !timerOn;
+      document.getElementById("fabBtn").className = "fab-btn " + (timerOn ? "on" : "off");
+      document.getElementById("timerBubble").classList.toggle("hidden", !timerOn);
+    }
+
+    function autoSubmit() {
+      if (currentMode === 'submit') { processSubmitModeAnswers(); }
+      else { answered.forEach((a, i) => { if (!a) answered[i] = { selected: -1, correct: false, skipped: true }; }); }
+      quizLocked = true;
+      document.getElementById("toastOverlay").classList.add("show");
+      document.getElementById("autoSubmitToast").classList.add("show");
+    }
+
+    function closeToast() {
+      document.getElementById("toastOverlay").classList.remove("show");
+      document.getElementById("autoSubmitToast").classList.remove("show");
+      showResult();
+    }
+
+    function buildNav() {
+      const nav = document.getElementById("qNav"); nav.innerHTML = "";
+      questions.forEach((_, i) => {
+        const d = document.createElement("div");
+        d.className = "q-dot" + (i === currentQ ? " active" : "");
+        d.textContent = i + 1;
+        d.onclick = () => { if (!quizDone) loadQuestion(i); };
+        nav.appendChild(d);
+      });
+      document.getElementById("totalQ").textContent = questions.length;
+    }
+
+    function updateNav() {
+      document.querySelectorAll(".q-dot").forEach((d, i) => {
+        d.className = "q-dot" + (quizLocked ? " locked" : "");
+        if (i === currentQ) d.classList.add("active");
+        if (currentMode === 'submit') {
+          if (selectedOptions[i] !== null) d.classList.add("visited");
+          else if (i < currentQ) d.classList.add("skipped");
+        } else {
+          const a = answered[i];
+          if (a) {
+            if (a.skipped) d.classList.add("skipped");
+            else if (a.correct) d.classList.add("answered-c");
+            else d.classList.add("answered-w");
+          }
+        }
+      });
+    }
+
+    function updateScore() {
+      if (currentMode === 'submit' && !quizDone) {
+        document.getElementById("correctQ").textContent = "—";
+        document.getElementById("wrongQ").textContent = "—";
+        document.getElementById("marksVal").textContent = "—";
+        return;
+      }
+      document.getElementById("correctQ").textContent = scores.correct;
+      document.getElementById("wrongQ").textContent = scores.wrong;
+      document.getElementById("marksVal").textContent = scores.marks.toFixed(2);
+    }
+
+    function loadQuestion(idx) {
+      currentQ = idx;
+      document.getElementById("qLabel").textContent = "Q " + (idx + 1);
+      renderQuestion(); renderOptions(); hideAnswer(); updateNav();
+      if (currentMode === 'haath' && answered[idx] && !answered[idx].skipped) {
+        revealAnswer(answered[idx].selected, false);
+      }
+      if (currentMode === 'submit' && selectedOptions[idx] !== null) {
+        const optEl = document.getElementById("opt_" + selectedOptions[idx]);
+        if (optEl) optEl.classList.add("selected-submit");
+      }
+      updateActionBar();
+    }
+
+    function renderQuestion() {
+      const q = questions[currentQ];
+      document.getElementById("questionText").innerHTML = (lang === 'hi' ? q.questionHindi : q.question).replace(/\n/g, "<br>");
+      document.getElementById("qTagText").textContent = q.tag || "";
+    }
+
+    function renderOptions() {
+      const q = questions[currentQ];
+      const opts = lang === 'hi' ? q.optionsHindi : q.options;
+      const wrap = document.getElementById("optionsWrap"); wrap.innerHTML = "";
+      const locked = quizLocked || (currentMode === 'haath' && answered[currentQ] && !answered[currentQ].skipped);
+      ["A", "B", "C", "D"].forEach((lbl, i) => {
+        const div = document.createElement("div");
+        div.className = "option" + (locked ? " disabled" : "");
+        div.id = "opt_" + i;
+        div.onclick = () => handleOptionClick(i);
+        div.innerHTML = `<div class="opt-label">${lbl}</div><div class="opt-text">${opts[i]}</div><div class="opt-icon" id="icon_${i}"></div>`;
+        wrap.appendChild(div);
+      });
+    }
+
+    // ════════════════════════════════════════════════════════
+    //  ✅ FIXED handleOptionClick — poori tarah andar, dono modes
+    // ════════════════════════════════════════════════════════
+    function handleOptionClick(idx) {
+      if (quizLocked) return;
+
+      if (currentMode === 'submit') {
+        // Submit mode — toggle selection
+        if (selectedOptions[currentQ] === idx) {
+          selectedOptions[currentQ] = null;
+          document.querySelectorAll(".option").forEach(o => o.classList.remove("selected-submit"));
+        } else {
+          document.querySelectorAll(".option").forEach(o => o.classList.remove("selected-submit"));
+          selectedOptions[currentQ] = idx;
+          const el = document.getElementById("opt_" + idx);
+          if (el) el.classList.add("selected-submit");
+        }
+        updateNav();
+        updateActionBar();
+        return;
+      }
+
+      // Haath mode — instant answer
+      if (answered[currentQ] && !answered[currentQ].skipped) return;
+
+      revealAnswer(idx, true);
+
+      // ✅ Server log — boys + girls dono
+      const q = questions[currentQ];
+      const opts = q.optionsHindi;
+      api({
+        action: "logAnswer",
+        name: student?.name || "",
+        mobile: student?.mobile || "",
+        gender: student?.gender || "",
+        qNum: String(currentQ + 1),
+        qText: q.questionHindi.substring(0, 80) + "...",
+        chosen: ["A", "B", "C", "D"][idx] + ") " + opts[idx],
+        correct: ["A", "B", "C", "D"][q.answer] + ") " + opts[q.answer],
+        isRight: String(idx === q.answer)
+      });
+
+      // ✅ Check karo agar sab ho gaye
+      setTimeout(checkIfAllDone, 300);
+    }
+
+    function skipQuestion() {
+      if (quizLocked) return;
+      if (currentMode === 'submit') {
+        selectedOptions[currentQ] = null;
+        document.querySelectorAll(".option").forEach(o => o.classList.remove("selected-submit"));
+        updateNav(); updateActionBar();
+      }
+      if (currentQ < questions.length - 1) loadQuestion(currentQ + 1);
+    }
+
+    function finalSubmitMode() {
+      if (quizLocked) return;
+      processSubmitModeAnswers();
+      quizLocked = true;
+      clearInterval(timerInterval);
+      setTimeout(showResult, 400);
+    }
+
+    function processSubmitModeAnswers() {
+      scores = { correct: 0, wrong: 0, marks: 0 };
+      questions.forEach((q, i) => {
+        const sel = selectedOptions[i];
+        if (sel === null) {
+          answered[i] = { selected: -1, correct: false, skipped: true };
+        } else {
+          const isCorrect = sel === q.answer;
+          answered[i] = { selected: sel, correct: isCorrect, skipped: false };
+          const earned = isCorrect ? CORRECT_M : WRONG_M;
+          scores.marks = +((scores.marks + earned).toFixed(10));
+          if (isCorrect) scores.correct++; else scores.wrong++;
+        }
+      });
+    }
+
+    function revealAnswer(idx, record) {
+      const q = questions[currentQ]; const isCorrect = idx === q.answer;
+      document.querySelectorAll(".option").forEach((o, i) => {
+        o.classList.add("disabled"); o.classList.remove("selected-submit");
+        if (i === q.answer) { o.classList.add("correct"); document.getElementById("icon_" + i).textContent = "✓"; }
+        else if (i === idx && !isCorrect) { o.classList.add("wrong"); document.getElementById("icon_" + i).textContent = "✗"; }
+      });
+      showAnswerBox(isCorrect);
+      if (record && (!answered[currentQ] || answered[currentQ].skipped)) {
+        answered[currentQ] = { selected: idx, correct: isCorrect, skipped: false };
+        const earned = isCorrect ? CORRECT_M : WRONG_M;
+        scores.marks = +((scores.marks + earned).toFixed(10));
+        if (isCorrect) scores.correct++; else scores.wrong++;
+        updateScore(); updateNav();
+      }
+      updateActionBar();
+    }
+
+    function showAnswerBox(isCorrect) {
+      const q = questions[currentQ];
+      const expl = lang === 'hi' ? q.explanationHindi : q.explanation;
+      const parts = expl.split("."); const short = parts[0] + "."; const rest = parts.slice(1).join(".").trim();
+      const earned = isCorrect ? CORRECT_M : WRONG_M;
+      const badge = document.getElementById("ansMarksBadge");
+      badge.textContent = isCorrect ? `+${CORRECT_M} Marks` : `${earned.toFixed(2)} Marks`;
+      badge.className = "ans-marks-badge " + (isCorrect ? "pos" : "neg");
+      document.getElementById("ansHeaderText").innerHTML = isCorrect ? "✅ &nbsp;सही उत्तर! Correct Answer" : "❌ &nbsp;गलत उत्तर! Wrong Answer";
+      document.getElementById("ansHeader").className = "ans-header " + (isCorrect ? "correct-h" : "wrong-h");
+      document.getElementById("ansShort").textContent = (isCorrect ? "✅ " : "❌ ") + short;
+      document.getElementById("ansDetail").textContent = rest;
+      document.getElementById("answerSection").classList.add("show");
+    }
+
+    function hideAnswer() { document.getElementById("answerSection").classList.remove("show"); }
+
+    function nextQuestion() {
+      if (currentQ < questions.length - 1) {
+        loadQuestion(currentQ + 1);
+      } else {
+        if (currentMode === 'haath' && answered.every(a => a !== null)) {
+          quizLocked = true; clearInterval(timerInterval);
+          setTimeout(showResult, 300);
+        }
+      }
+    }
+
+    function checkIfAllDone() {
+      if (currentMode === 'haath' && answered.every(a => a !== null)) {
+        quizLocked = true; clearInterval(timerInterval);
+        setTimeout(showResult, 400);
+      }
+    }
+
+    function updateActionBar() {
+      const nb = document.getElementById("nextBtn");
+      const sk = document.getElementById("skipBtn");
+      const sb = document.getElementById("inlineSubmitBtn");
+      const hint = document.getElementById("modeHint");
+      nb.style.display = "none"; sk.style.display = "none"; sb.style.display = "none"; hint.textContent = "";
+
+      if (quizLocked) { hint.textContent = "🔒 Quiz जमा हो गई।"; return; }
+
+      if (currentMode === 'haath') {
+        const isAnswered = answered[currentQ] && !answered[currentQ].skipped;
+        if (isAnswered) {
+          nb.style.display = "";
+          hint.textContent = answered.every(a => a !== null) ? "सभी complete! →" : "Next →";
+        } else {
+          sk.style.display = "";
+          hint.textContent = "⚡ Option click करते ही Answer दिखेगा";
+        }
+      } else {
+        nb.style.display = ""; sk.style.display = ""; sb.style.display = "";
+        const sel = selectedOptions[currentQ];
+        const attempted = selectedOptions.filter(x => x !== null).length;
+        sb.textContent = `✅ Submit Quiz (${attempted}/${questions.length})`;
+        sb.disabled = attempted === 0;
+        if (sel !== null) {
+          sk.textContent = "Skip (Clear) →"; sk.style.color = "var(--wrong)"; sk.style.borderColor = "var(--wrong)";
+          hint.textContent = `✍️ Option ${["A", "B", "C", "D"][sel]} चुना — Skip करने पर deselect होगा`;
+        } else {
+          sk.textContent = "Skip →"; sk.style.color = ""; sk.style.borderColor = "";
+          hint.textContent = "📝 Option चुनें या Skip करें";
+        }
+      }
+    }
+
+    // ════════════════════════════════════════════════════════
+    //  RESULT
+    // ════════════════════════════════════════════════════════
+    async function showResult() {
+      quizDone = true; quizLocked = true; clearInterval(timerInterval);
+      document.getElementById("timerBubble").classList.add("hidden");
+      document.getElementById("fabBtn").style.display = "none";
+      document.getElementById("quizCard").style.display = "none";
+      document.getElementById("qNav").style.display = "none";
+      document.getElementById("scoreBar").style.display = "none";
+      document.getElementById("modeSwitchWrap").classList.remove("visible");
+      document.getElementById("resultScreen").classList.add("show");
+
+      const total = questions.length, correct = scores.correct, wrong = scores.wrong;
+      const skipped = answered.filter(a => !a || a.skipped).length;
+      const attended = correct + wrong, marks = scores.marks, maxMarks = total * CORRECT_M;
+      const pct = attended > 0 ? Math.round((correct / attended) * 100) : 0;
+      const timeTaken = fmtTime(Math.round((Date.now() - quizStart) / 1000));
+
+      const rmb = document.getElementById("resultModeBadge");
+      if (currentMode === 'haath') { rmb.className = "result-mode-badge haath"; rmb.textContent = "⚡ हाथो-हाथ Mode में दिया"; }
+      else { rmb.className = "result-mode-badge submit"; rmb.textContent = "📝 Submit Mode में दिया"; }
+
+      document.getElementById("resultEmoji").textContent = pct >= 75 ? "🏆" : pct >= 50 ? "🎯" : pct >= 25 ? "📚" : "💪";
+      document.getElementById("resultSubtitle").textContent = pct >= 75 ? "शानदार! Excellent!" : pct >= 50 ? "अच्छा प्रयास!" : pct >= 25 ? "मेहनत जारी रखें!" : "हार मत मानो! 💪";
+      document.getElementById("resultBigScore").textContent = marks.toFixed(2);
+      document.getElementById("resultOutOf").textContent = `out of ${maxMarks} marks  (attempted ${attended}/${total})`;
+      setTimeout(() => document.getElementById("resultPctFill").style.width = Math.max(0, Math.min(100, pct)) + "%", 100);
+      document.getElementById("resultPctLabel").textContent = `${pct}% Accuracy  (${correct} सही / ${wrong} गलत / ${skipped} skip)`;
+      document.getElementById("rCorrect").textContent = correct;
+      document.getElementById("rWrong").textContent = wrong;
+      document.getElementById("rSkip").textContent = skipped;
+      document.getElementById("rMarks").textContent = marks.toFixed(2);
+      document.getElementById("fc-all").textContent = `(${total})`;
+      document.getElementById("fc-correct").textContent = `(${correct})`;
+      document.getElementById("fc-wrong").textContent = `(${wrong})`;
+      document.getElementById("fc-skip").textContent = `(${skipped})`;
+
+      const statusEl = document.getElementById("resultSendStatus");
+      statusEl.innerHTML = `<span class="status-badge sending"><span class="spinner"></span> Kindly wait, your result is in progress....</span>`;
+
+      const r = await api({
+        action: "submitResult",
+        studentId: student?.id || "unknown",
+        name: student?.name || "unknown",
+        mobile: student?.mobile || "unknown",
+        gender: student?.gender || "unknown",
+        mode: currentMode,
+        correct, wrong, skip: skipped,
+        marks: marks.toFixed(2), maxMarks,
+        accuracy: pct, timeTaken, attended, total
+      });
+
+      statusEl.innerHTML = r.ok
+        ? `<span class="status-badge sent">✅ Your result is ready</span>`
+        : `<span class="status-badge error">⚠ Submit error — ${r.error || "retry"}</span>`;
+    }
+
+    // ════════════════════════════════════════════════════════
+    //  FILTER & DETAILS
+    // ════════════════════════════════════════════════════════
+    function filterDetails(type) {
+      const sec = document.getElementById("detailsSection"), bar = document.getElementById("filterBar");
+      if (activeFilter === type && sec.classList.contains("show")) {
+        activeFilter = null; sec.classList.remove("show"); bar.classList.remove("show");
+        clearStatHL(); document.getElementById("btnAllDetails").classList.remove("active"); return;
+      }
+      activeFilter = type; sec.classList.add("show"); bar.classList.add("show");
+      document.querySelectorAll(".btn-filter").forEach(b => b.classList.remove("active"));
+      const fb = document.getElementById("fBtn-" + type); if (fb) fb.classList.add("active");
+      clearStatHL();
+      if (type === "correct") document.getElementById("statCorrect").classList.add("active-filter");
+      else if (type === "wrong") document.getElementById("statWrong").classList.add("active-filter");
+      else if (type === "skip") document.getElementById("statSkip").classList.add("active-filter");
+      document.getElementById("btnAllDetails").classList.toggle("active", type === "all");
+      buildDetails(type);
+      setTimeout(() => sec.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
+    }
+
+    function clearStatHL() {
+      ["statCorrect", "statWrong", "statSkip"].forEach(id => {
+        const el = document.getElementById(id); if (el) el.classList.remove("active-filter");
+      });
+    }
+
+    function buildDetails(filter = 'all') {
+      const sec = document.getElementById("detailsSection"); sec.innerHTML = "";
+      const LBL = ["A", "B", "C", "D"]; let count = 0;
+      questions.forEach((q, i) => {
+        const a = answered[i];
+        const isSkip = !a || a.skipped, isCorrect = a && !a.skipped && a.correct, isWrong = a && !a.skipped && !a.correct;
+        if (filter === "correct" && !isCorrect) return;
+        if (filter === "wrong" && !isWrong) return;
+        if (filter === "skip" && !isSkip) return;
+        count++;
+        const opts = lang === 'hi' ? q.optionsHindi : q.options;
+        const txt = (lang === 'hi' ? q.questionHindi : q.question).replace(/\n/g, "<br>");
+        const expl = lang === 'hi' ? q.explanationHindi : q.explanation;
+        const earned = isCorrect ? CORRECT_M : isWrong ? WRONG_M : 0;
+        let optsHTML = "";
+        opts.forEach((opt, oi) => {
+          let cls = "", note = "";
+          const isAns = oi === q.answer, isChosen = !isSkip && a.selected === oi;
+          if (isAns && isChosen) { cls = "dco"; note = "✓ सही उत्तर — आपका जवाब"; }
+          else if (isAns) { cls = "dco"; note = "✓ सही उत्तर"; }
+          else if (isChosen) { cls = "dcw"; note = "✗ आपका जवाब (गलत)"; }
+          optsHTML += `<div class="detail-opt ${cls}"><div class="detail-opt-lbl">${LBL[oi]}</div><div><span>${opt}</span>${note ? `<span class="detail-opt-note">${note}</span>` : ""}</div></div>`;
+        });
+        const hdrC = isCorrect ? "dc-correct-header" : isWrong ? "dc-wrong-header" : "dc-skip-header";
+        const badgC = isCorrect ? "correct" : isWrong ? "wrong" : "skip";
+        const badgT = isCorrect ? "✓ सही" : isWrong ? "✗ गलत" : "— Skip";
+        const mCls = isCorrect ? "pos" : isWrong ? "neg" : "zero";
+        const mTxt = isCorrect ? `+${CORRECT_M}` : isWrong ? earned.toFixed(2) : "0";
+        sec.innerHTML += `<div class="detail-card"><div class="detail-card-header ${hdrC}"><span class="dc-qnum">Q ${i + 1}</span><span class="dc-result-badge ${badgC}">${badgT}</span><span class="dc-marks ${mCls}">${mTxt} pts</span></div><div class="detail-q-text">${txt}</div><div class="detail-opts">${optsHTML}</div><div class="detail-expl"><strong>📝 Explanation</strong>${expl}</div></div>`;
+      });
+      if (count === 0) {
+        const msgs = { correct: "कोई सही जवाब नहीं 😅", wrong: "कोई गलत जवाब नहीं 🎉", skip: "कोई skip नहीं 👍" };
+        sec.innerHTML = `<div class="no-filter-result"><div class="nfr-icon">📭</div><div>${msgs[filter] || "कोई data नहीं"}</div></div>`;
+      }
+      sec.innerHTML += `<div style="text-align:center;padding:24px 0 8px;"><button class="btn-re-attempt" onclick="reAttempt()" style="padding:14px 40px;font-size:1rem;">🔄 Re-Attempt Quiz</button></div>`;
+    }
+
+    function reAttempt() {
+      document.getElementById("fabBtn").style.display = "";
+      document.getElementById("fabBtn").className = "fab-btn on";
+      document.getElementById("timerBubble").classList.remove("hidden");
+      document.getElementById("modeSwitchWrap").classList.add("visible");
+      timerOn = true; initQuiz();
+    }
+
+    function setLang(l) {
+      lang = l;
+      document.getElementById("btnEN").classList.toggle("active", l === "en");
+      document.getElementById("btnHI").classList.toggle("active", l === "hi");
+      renderQuestion(); renderOptions();
+      if (currentMode === 'haath' && answered[currentQ] && !answered[currentQ].skipped) revealAnswer(answered[currentQ].selected, false);
+      if (activeFilter !== null) buildDetails(activeFilter);
+    }
+
+    function downloadMCQs() {
+      const blob = new Blob([JSON.stringify(questions, null, 2)], { type: "text/plain" });
+      const url = URL.createObjectURL(blob); const a = document.createElement("a");
+      a.href = url; a.download = "mcq_questions.txt"; document.body.appendChild(a); a.click();
+      document.body.removeChild(a); URL.revokeObjectURL(url);
+    }
+
+
+
+
+  </script>
+</body>
+
+</html>
